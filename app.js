@@ -61,8 +61,9 @@ const sessionOption = {
 
 if (process.env.NODE_ENV === 'production') {
     sessionOption.proxy = true; // 중계? 서버
-    sessionOption.cookie.secure = true; // 배포할 땐 https로 씀
+    // sessionOption.cookie.secure = true; // 배포할 땐 https로 씀
 }
+
 app.use(session(sessionOption));
 
 app.use(flash());

@@ -25,7 +25,7 @@ db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followers', foreignKey:
 db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followings', foreignKey: 'followerId' });
 
 db.User.belongsToMany(db.Post, { through: 'Like' }); // 사용자와 게시글 간에 다대 다 관계가 됨
-db.Post.belongsToMany(db.User, { through: 'Like' });
+db.Post.belongsToMany(db.User, { through: 'Like', as: 'Liker' });
 // 다대다 관계
 
 // 1. 제로

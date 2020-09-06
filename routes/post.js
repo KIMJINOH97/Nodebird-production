@@ -20,7 +20,8 @@ const upload = multer({
         },
         limit: { fileSize: 5 * 1024 * 1024 },
     }), //서버 디스크에 저장 cb(에러, 결과값)
-});
+}); // cb는 콜백
+
 router.post('/img', isLoggedIn, upload.single('img'), (req, res) => {
     // upload.single로 사진의 경로를 알림.
     console.log(req.body, req.file); // multer를 통해 업로드 한 것은 file에 저장되어 있음
@@ -32,7 +33,7 @@ const upload2 = multer();
 router.post('/', isLoggedIn, upload2.none(), async (req, res, next) => {
     // 게시글 업로드 중 사진 첨부 안 할 경우
     try {
-        console.log(req.user.id);
+        //console.log(req.user.id);
         const post = await Post.create({
             content: req.body.content,
             img: req.body.url,
@@ -83,4 +84,44 @@ router.get('/hashtag', async (req, res, next) => {
     }
     // A.getB: 관계있는 low 조회 A.addB: 관계 생성 A.setB: 관계 수정  A.removeB: 관계 제거
 });
+
+router.delete('/:id', async (req, res, next) => {
+    try {
+        await Post.destroy({ where: { id: req.params.id, userId: req.user.id } }); // 추가적인 확인 내가 쓴 게시글인지 현재 로그인 한 사람 아이디로 확인
+        res.send('ok');
+    } catch (e) {
+        console.error(e);
+        next(e);
+    }
+});
+
+router.post('/:id/like', async (req, res, next) => {
+    try {
+        const post = await Post.findOne({
+            where: { id: req.params.id },
+        });
+        console.log('요청 매개들 like', req.params);
+        await post.addLiker(parseInt(req.user.id, 10)); // 게시글에 좋아요 누른 사람을 추가해야함
+        res.send('ok'); // 왜 redirect가 아닌진 모르겠음
+    } catch (e) {
+        console.error(e);
+        next(e);
+    }
+});
+
+router.delete('/:id/unlike', async (req, res, next) => {
+    try {
+        const post = await Post.findOne({
+            where: { id: req.params.id },
+        });
+        console.log('요청 매개들', req.params);
+        await post.removeLiker(req.user.id);
+        res.send('ok'); // 왜 redirect가 아닌진 모르겠음
+    } catch (e) {
+        console.error(e);
+        next(e);
+    }
+});
+// rest api 에 따르면 router.delete가 맞음
+
 module.exports = router;
