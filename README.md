@@ -1,4 +1,6 @@
 # Nodebird-production clone coding
-```
-http://35.247.60.188/
-```
+
+url = http://35.247.60.188/
+
+>기능 : 회원가입 및 로그인, 게시글 작성, 팔로우, 좋아요
+>>GCP 
