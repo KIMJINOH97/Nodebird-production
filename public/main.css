@@ -144,12 +144,23 @@ textarea {
     font-weight: bold;
     margin-right: 10px;
 }
-.twit-follow {
+.twit-follow,
+.like {
     padding: 1px 5px;
     background: #fff;
     border: 1px solid silver;
     border-radius: 5px;
     color: crimson;
+    font-size: 12px;
+    cursor: pointer;
+}
+.twit-unfollow,
+.unlike {
+    padding: 1px 5px;
+    background: #fff;
+    border: 1px solid silver;
+    border-radius: 5px;
+    color: blue;
     font-size: 12px;
     cursor: pointer;
 }
